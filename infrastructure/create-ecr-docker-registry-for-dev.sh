@@ -8,4 +8,4 @@ aws ecr create-repository \
   --image-tag-mutability MUTABLE \
   --region ${AWS_REGION}
 
-  # slm
+  # slm lmm
