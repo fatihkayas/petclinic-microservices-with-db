@@ -17,7 +17,7 @@ pipeline {
                 echo "Creating ECR Repo for ${APP_NAME} app"
                 sh """
                 aws ecr create-repository \
-                    --rselim${APP_REPO_NAME} \
+                    --repository-name ${APP_REPO_NAME} \
                     --image-scanning-configuration scanOnPush=false \
                     --image-tag-mutability MUTABLE \
                     --region ${AWS_REGION}
@@ -87,7 +87,7 @@ pipeline {
                 """
                 script {
                     echo "Kubernetes Master is not UP and running yet."
-                    env.id = sh(script: 'aws ec2 describe-instances --filters Name=tag-value,Values=master Name=tag-value,Values=tera-kube-ans Name=instaselimValues=running --query Reservations[*].Instances[*].[InstanceId] --output text',  returnStdout:true).trim()
+                    env.id = sh(script: 'aws ec2 describe-instances --filters Name=tag-value,Values=master Name=tag-value,Values=tera-kube-ans Name=instance-state-name,Values=running --query Reservations[*].Instances[*].[InstanceId] --output text',  returnStdout:true).trim()
                     sh 'aws ec2 wait instance-status-ok --instance-ids $id'
                 }
             }
@@ -119,7 +119,7 @@ pipeline {
             steps {
                 echo "Check if the ${APP_NAME} app is ready or not"
                 script {
-                    env.MASTER_PUBLIC_IP = sh(script:"aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=master Name=tag-value,Values=tera-kube-ans Name=instaselimValues=running --query Reservations[*].Instances[*].[PublicIpAddress] --output text", returnStdout:true).trim()
+                    env.MASTER_PUBLIC_IP = sh(script:"aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=master Name=tag-value,Values=tera-kube-ans Name=instance-state-name,Values=running --query Reservations[*].Instances[*].[PublicIpAddress] --output text", returnStdout:true).trim()
                     while(true) {
                         try{
                             sh "curl -s ${MASTER_PUBLIC_IP}:30001"
@@ -150,7 +150,7 @@ pipeline {
             echo 'Delete the Image Repository on ECR'
             sh """
                 aws ecr delete-repository \
-                  --rselim${APP_REPO_NAME} \
+                  --repository-name ${APP_REPO_NAME} \
                   --region ${AWS_REGION}\
                   --force
                 """
