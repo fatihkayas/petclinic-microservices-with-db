@@ -15,7 +15,7 @@ controllerManager:
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: InitConfiguration # for cluster starting 
 nodeRegistration: # new node register 
-  kubeletExtraArgs: # ekstra set
+  kubeletExtraArgs: # ekstra set make
     cloud-provider: external
 ---
 kind: KubeletConfiguration  #  
