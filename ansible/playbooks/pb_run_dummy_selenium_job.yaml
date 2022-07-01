@@ -2,7 +2,7 @@
   tasks:
   - name: run dummy selenium job
     shell: "docker run --rm -v {{ workspace }}:{{ workspace }} -w {{ workspace }} callahanclarus/selenium-py-chrome:latest python {{ item }}"
-    with_fileglob: "{{ workspace }}/selenium-jobs/dummy*.py"
+    with_fileglob: "{{ workspace }}/selenium-jobs/dummy*.py" # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/fileglob_lookup.html
     register: output
   
   - name: show results
