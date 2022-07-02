@@ -7,10 +7,10 @@
       state: directory
       mode: '0755'
 
-  - name: copy the docker config file
+  - name: copy the docker config file   # bilgisayar configure icin
     become: yes
     copy: 
-      src: $JENKINS_HOME/.docker/config.json
+      src: $JENKINS_HOME/.docker/config.json # ECR reponun credentiali 
       dest: /home/ubuntu/.docker/config.json
 
   - name: deploy petclinic application
